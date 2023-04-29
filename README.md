@@ -87,7 +87,7 @@ In fedora-37-sys:
 
 Copy and paste this code into the file:
 
-## Trezor
+### Trezor
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="534c", ATTR{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
