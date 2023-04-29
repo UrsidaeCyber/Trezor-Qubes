@@ -3,6 +3,8 @@ This repostiory will guide the process of installing Trezor Suite and using Trez
 Unfortunately installing Trezor Suite is not as straight forward as installing other software on Qubes is. So let’s dive in.
 This guide contains two parts: brief instructions and in-depth instructions. Use whichever is suited to your needs.
 
+Link to in-depth instructions if you require detail: https://github.com/UrsidaeCyber/Trezor-Qubes/edit/main/README.md#step-4-fedora-templates
+
 # Brief Instructions:
 
 ## Step 1: Install Trezor Suite
@@ -11,7 +13,7 @@ This guide contains two parts: brief instructions and in-depth instructions. Use
 
 2. Verify the download.
 
-3. Execute code: sudo chmod u+x /Downloads/Trezor-Suite-23.4.2-linux-x86_64.AppImage
+3. Execute in terminal: `sudo chmod u+x /Downloads/Trezor-Suite-23.4.2-linux-x86_64.AppImage`
 
 4. Right click on the .AppImage file and press execute to open the application.
 
@@ -19,23 +21,23 @@ This guide contains two parts: brief instructions and in-depth instructions. Use
 
 In Trezor Whonix AppVM:
 
-1. sudo nano /rw/config/rc.local
+1. `sudo nano /rw/config/rc.local`
 
 2. Add the following code to the file:
 
-socat TCP-LISTEN:21325,fork EXEC:”qrexec-client-vm sys-usb trezord-service” &
+`socat TCP-LISTEN:21325,fork EXEC:”qrexec-client-vm sys-usb trezord-service” &`
 
 3. Save and exit.
 
-##Step 3: Dom0 Trezor Policy
+## Step 3: Dom0 Trezor Policy
 
 In Dom0:
 
-1. sudo nano /etc/qubes-rpc/policy/trezord-service
+1. `sudo nano /etc/qubes-rpc/policy/trezord-service`
 
 2. Add this code to the new file:
 
-$anyvm $anyvm allow,user=trezord,target=sys-usb
+`$anyvm $anyvm allow,user=trezord,target=sys-usb`
 
 3. Save and exit.
 
@@ -53,17 +55,17 @@ $anyvm $anyvm allow,user=trezord,target=sys-usb
 
 In fedora-37-sys-dvm:
 
-1. sudo mkdir /usr/local/etc/qubes-rpc
+1. `sudo mkdir /usr/local/etc/qubes-rpc`
 
-2. sudo nano /usr/local/etc/qubes-rpc/trezord-service
+2. `sudo nano /usr/local/etc/qubes-rpc/trezord-service`
 
 3. Add this code to the file:
 
-socat – TCP:localhost:21325
+`socat – TCP:localhost:21325`
 
 4. Save and exit.
 
-5. sudo chmod +x /usr/local/etc/qubes-rpc/trezord-service
+5. `sudo chmod +x /usr/local/etc/qubes-rpc/trezord-service`
 
 ## Step 6: Trezor Bridge
 
@@ -71,66 +73,71 @@ In fedora-37-sys:
 
 Download the Trezor Bridge .rpm file from Trezor.
 
-1. sudo chmod u+x /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm
+1. `sudo chmod u+x /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm`
 
-2. sudo rpm -i /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm
+2. `sudo rpm -i /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm`
 
 ## Step 7: Udev rules
 
 Note on Udev rpm use: Using the Trezor-provided Udev rpm file does not work for Qubes. See in-depth explanation section below. Use the provided Method 1 or 2 here. Use method 1 if comforable with enabling networking in template and method 2 if not.
 
-Method 1: Manual Build
+### Method 1: Manual Build
 
 In fedora-37-sys:
 
-1. sudo nano /etc/udev/rules.d/51-trezor.rules
+1. `sudo nano /etc/udev/rules.d/51-trezor.rules`
 
 Copy and paste this code into the file:
 
-### Trezor
+`# Trezor
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="534c", ATTR{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
-KERNEL=="hidraw*", ATTRS{idVendor}=="534c", ATTRS{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"
+KERNEL=="hidraw*", ATTRS{idVendor}=="534c", ATTRS{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl`
 
-# Trezor v2
+`# Trezor v2
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="1209", ATTR{idProduct}=="53c0", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="1209", ATTR{idProduct}=="53c1", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
-KERNEL=="hidraw*", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="53c1", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"
+KERNEL=="hidraw*", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="53c1", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"`
 
 2. Save and exit.
 
-3. sudo chmod +x /etc/udev/rules.d/51-trezor.rules
+3. `sudo chmod +x /etc/udev/rules.d/51-trezor.rules`
 
-OR
+### OR
 
-Method 2: Curl Installation
+### Method 2: Curl Installation
 
 1. In fedora-37-sys enable networking.
 
-2. sudo dnf install curl
+2. `sudo dnf install curl`
 
-3. sudo curl https://data.trezor.io/udev/51-trezor.rules -o /etc/udev/rules.d/51-trezor.rules
+3. `sudo curl https://data.trezor.io/udev/51-trezor.rules -o /etc/udev/rules.d/51-trezor.rules`
 
-4. sudo chmod +x /etc/udev/rules.d/51-trezor.rules
+4. `sudo chmod +x /etc/udev/rules.d/51-trezor.rules`
+
+5. Revoke fedora-37-sys networking permissions.
 
 ## Step 8: Install Trezor Dependencies
 
 In the Trezor Whonix AppVM:
 
-1. sudo apt install pip
+1. `sudo apt install pip`
 
-2. pip3 install –user trezor
+2. `pip3 install –user trezor`
 
-AND
+### AND
 
 In fedora-37-sys:
 
-1. sudo dnf install trezor-common
+1. Allow networking.
 
+2.  `sudo dnf install trezor-common`
+
+3. Revoke networking permissions in fedora-37-sys.
 
 # In-Depth Instructions:
 
@@ -142,9 +149,9 @@ In fedora-37-sys:
 
 3. Navigate to Trezor’s website and download the Trezor suite application. It will come in a .AppImage file for Linux. Download the signature and 2021 signing key along with it. Verify the download.
 
-4. Open a terminal window and run the following command to allow it to be executed as a program:
+4. Open a terminal window in your Whonix AppVM and run the following command to allow the Trezor Suite .AppImage to be executed as a program:
 
-sudo chmod u+x /Downloads/Trezor-Suite-23.4.2-linux-x86_64.AppImage
+`sudo chmod u+x /Downloads/Trezor-Suite-23.4.2-linux-x86_64.AppImage`
 
 Make sure to adjust the command text to account for the name of your file as it may not be the same depending on the current version. Remember to do this for all subsequent steps.
 
@@ -154,13 +161,13 @@ You can open the application by right-clicking on the .AppImage file and clickin
 
 1. Start a Terminal window in your new Trezor-dedicated AppVM and execute the following code to edit the rc.local file:
 
-sudo nano /rw/config/rc.local
+`sudo nano /rw/config/rc.local`
 
 You are now editing the rc.local plain text file through terminal.
 
 2. Navigate to the bottom of the file using your arrow keys and type the following code (note the & at the end):
 
-socat TCP-LISTEN:21325,fork EXEC:”qrexec-client-vm sys-usb trezord-service” &
+`socat TCP-LISTEN:21325,fork EXEC:”qrexec-client-vm sys-usb trezord-service” &`
 
 Press Ctrl + X to save.
 
@@ -173,14 +180,14 @@ Although this portion of code can be executed in any AppVM with networking, I ad
 ## Step 3: Dom0 Trezor Policy
 
 1. Open terminal in dom0 and run the following code:
-
-sudo nano /etc/qubes-rpc/policy/trezord-service 
+`
+sudo nano /etc/qubes-rpc/policy/trezord-service`
 
 This will create a plain text file in dom0 within that directory. You are now editing that file in your terminal window.
 
 2. Paste the following code into the file via terminal:
 
-$anyvm $anyvm allow,user=trezord,target=sys-usb 
+`$anyvm $anyvm allow,user=trezord,target=sys-usb `
 
 3. Press Ctrl + X to save.
 
@@ -212,17 +219,17 @@ In fedora-37-sys-dvm:
 
 1. Open terminal and execute the following code:
 
-sudo mkdir /usr/local/etc/qubes-rpc
+`sudo mkdir /usr/local/etc/qubes-rpc`
 
 This will create a folder titled qubes-rpc within the specified directory
 
 2. Create a plain text file within that folder titled trezord-service by executing the following code:
 
-sudo nano /usr/local/etc/qubes-rpc/trezord-service
+`sudo nano /usr/local/etc/qubes-rpc/trezord-service`
 
 3. You are now editing the plain text file within the terminal window. Add the following line of code to the file:
 
-socat – TCP:localhost:21325 
+`socat – TCP:localhost:21325 `
 
 Press Ctrl + X to save.
 
@@ -230,7 +237,7 @@ Press Y to confirm then press Enter to exit.
 
 4. Make the new file executable with the following command:
 
-sudo chmod +x /usr/local/etc/qubes-rpc/trezord-service
+`sudo chmod +x /usr/local/etc/qubes-rpc/trezord-service`
 
 ## Step 6: Trezor Bridge
 
@@ -240,11 +247,11 @@ In fedora-37-sys:
 
 2. Open a terminal window in fedora-37-sys and run the following code to allow the rpm file to be executable:
 
-sudo chmod u+x /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm
+`sudo chmod u+x /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm`
 
 3. Install the Trezor bridge rpm file with the following code:
 
-sudo rpm -i /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm
+`sudo rpm -i /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm`
 
 This will automatically install the bridge in the following directories:
 
@@ -252,7 +259,9 @@ This will automatically install the bridge in the following directories:
 
 /usr/lib/systemd/system/trezord.service
 
-Successful installation should result in terminal showing that both directories are communicating with each other: “created symlink /etc/systemd/system/multi-user.target.wants/trezord.service → /usr/lib/systemd/system/trezord.service.”
+Successful installation should result in terminal showing that both directories are communicating with each other: 
+
+> “created symlink /etc/systemd/system/multi-user.target.wants/trezord.service → /usr/lib/systemd/system/trezord.service.”
 
 ## Step 7: Udev rules
 
@@ -270,29 +279,29 @@ An alternative option exists to use the Udev rpm file provided by Trezor and run
 
 If you run the rpm in fedora-37-sys it won’t install in the right directory, and if you run it in fedora-37-sys-dvm, it will install in the right place but won’t remain persistent into sys-usb.
 
-Method 1: Manual Build
+### Method 1: Manual Build
 
 In fedora-37-sys:
 
 1. Run the following code in a terminal window to create the 51-trezor.rules file in the Udev rules directory.
 
-sudo nano /etc/udev/rules.d/51-trezor.rules
+`sudo nano /etc/udev/rules.d/51-trezor.rules`
 
 2. After running this command you are now editing the plain text file you have just created. Copy and paste the following code into terminal:
 
-# Trezor
+`# Trezor
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="534c", ATTR{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
-KERNEL=="hidraw*", ATTRS{idVendor}=="534c", ATTRS{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"
+KERNEL=="hidraw*", ATTRS{idVendor}=="534c", ATTRS{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"`
 
-# Trezor v2
+`# Trezor v2
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="1209", ATTR{idProduct}=="53c0", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="1209", ATTR{idProduct}=="53c1", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
-KERNEL=="hidraw*", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="53c1", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"
+KERNEL=="hidraw*", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="53c1", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"`
 
 3. Press control + X to save the file.
 
@@ -302,36 +311,46 @@ Press Enter to exit.
 
 4. Make the Udev rules file executable by running the following code in terminal:
 
-sudo chmod +x /etc/udev/rules.d/51-trezor.rules 
+`sudo chmod +x /etc/udev/rules.d/51-trezor.rules `
 
-Method 2: Direct Installation Via Curl
+### Method 2: Direct Installation Via Curl
 
 1. Grant networking permissions to fedora-37-sys in the Qubes manager.
 
 2. In a fedora-37-sys terminal window install curl with this command:
 
-sudo dnf install curl
+`sudo dnf install curl`
 
 3. Download the Trezor Udev rules via curl:
 
-sudo curl https://data.trezor.io/udev/51-trezor.rules -o /etc/udev/rules.d/51-trezor.rules
+`sudo curl https://data.trezor.io/udev/51-trezor.rules -o /etc/udev/rules.d/51-trezor.rules`
 
 4. Once the Udev rules are installed, verify they are in the right directory. They should be in /etc/udev/rules.d as a file titled 51-trezor.rules.
 
 5. Once you have successfully installed the Udev file in the correct location, make the file executable by using the following command:
 
-sudo chmod +x /etc/udev/rules.d/51-trezor.rules
+`sudo chmod +x /etc/udev/rules.d/51-trezor.rules`
 
-Step 8: Install Trezor Dependencies
+6. Revoke fedora-37-sys networking permissions in the Qubes manager.
 
-In the Whonix AppVM where you are using Trezor, open terminal and run the following commands:
+## Step 8: Install Trezor Dependencies
 
-1. sudo apt install pip
+1. In the Whonix AppVM where you are using Trezor open a terminal window.
 
-2. pip3 install –user trezor
+2. Run the following command to install pip. 
+
+`sudo apt install pip`
+
+3. Run the following command to install the trezor package:
+
+`pip3 install –user trezor`
 
 AND
 
-In fedora-37-sys, run the following command:
+1. Enable networking permissions for fedora-37-sys in the Qubes manager.
 
-sudo dnf install trezor-common
+2. Run the following command to install the trezor-common package:
+
+`sudo dnf install trezor-common`
+
+3. Revoke fedora-37-sys networking permissions in the Qubes manager.`
