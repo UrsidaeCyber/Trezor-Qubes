@@ -3,7 +3,7 @@ This repostiory will guide the process of installing Trezor Suite and using Trez
 Unfortunately installing Trezor Suite is not as straight forward as installing other software on Qubes is. So let’s dive in.
 This guide contains two parts: brief instructions and in-depth instructions. Use whichever is suited to your needs.
 
-Link to in-depth instructions if you require detail: https://github.com/UrsidaeCyber/Trezor-Qubes/edit/main/README.md#step-4-fedora-templates
+Link to in-depth instructions if you require detail: https://github.com/UrsidaeCyber/Trezor-Qubes#in-depth-instructions
 
 # Brief Instructions:
 
