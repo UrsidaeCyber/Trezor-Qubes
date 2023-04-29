@@ -5,7 +5,7 @@ This guide contains two parts: brief instructions and in-depth instructions. Use
 
 # Brief Instructions:
 
-Step 1: Install Trezor Suite
+## Step 1: Install Trezor Suite
 
 1. Install the Trezor Suite .AppImage from the Trezor website along with the signature and signing key in a new Whonix AppVM dedicated to Trezor.
 
@@ -15,7 +15,7 @@ Step 1: Install Trezor Suite
 
 4. Right click on the .AppImage file and press execute to open the application.
 
-Step 2: Port Listening
+## Step 2: Port Listening
 
 In Trezor Whonix AppVM:
 
@@ -27,7 +27,7 @@ socat TCP-LISTEN:21325,fork EXEC:”qrexec-client-vm sys-usb trezord-service” 
 
 3. Save and exit.
 
-Step 3: Dom0 Trezor Policy
+##Step 3: Dom0 Trezor Policy
 
 In Dom0:
 
@@ -39,7 +39,7 @@ $anyvm $anyvm allow,user=trezord,target=sys-usb
 
 3. Save and exit.
 
-Step 4: Fedora Cloning
+## Step 4: Fedora Cloning
 
 1. Clone your current regular fedora-37 template Qube and name it fedora-37-sys.
 
@@ -49,7 +49,7 @@ Step 4: Fedora Cloning
 
 4. Set sys-usb’s template as fedora-37-sys-dvm.
 
-Step 5: Trezord Service
+## Step 5: Trezord Service
 
 In fedora-37-sys-dvm:
 
@@ -65,7 +65,7 @@ socat – TCP:localhost:21325
 
 5. sudo chmod +x /usr/local/etc/qubes-rpc/trezord-service
 
-Step 6: Trezor Bridge
+## Step 6: Trezor Bridge
 
 In fedora-37-sys:
 
@@ -75,7 +75,7 @@ Download the Trezor Bridge .rpm file from Trezor.
 
 2. sudo rpm -i /Downloads/trezor-bridge-2.0.27-1.x86_64.rpm
 
-Step 7: Udev rules
+## Step 7: Udev rules
 
 Note on Udev rpm use: Using the Trezor-provided Udev rpm file does not work for Qubes. See in-depth explanation section below. Use the provided Method 1 or 2 here. Use method 1 if comforable with enabling networking in template and method 2 if not.
 
@@ -117,7 +117,7 @@ Method 2: Curl Installation
 
 4. sudo chmod +x /etc/udev/rules.d/51-trezor.rules
 
-Step 8: Install Trezor Dependencies
+## Step 8: Install Trezor Dependencies
 
 In the Trezor Whonix AppVM:
 
@@ -134,7 +134,7 @@ In fedora-37-sys:
 
 # In-Depth Instructions:
 
-Step 1: Install Trezor Suite
+## Step 1: Install Trezor Suite
 
 1. Create a new Whonix template specifically for cryptocurrency use. We will install some programs at the template level and may not want these to potentially interfere with our regular Whonix use.
 
@@ -150,7 +150,7 @@ Make sure to adjust the command text to account for the name of your file as it 
 
 You can open the application by right-clicking on the .AppImage file and clicking “execute”.
 
-Step 2: Port Listening
+## Step 2: Port Listening
 
 1. Start a Terminal window in your new Trezor-dedicated AppVM and execute the following code to edit the rc.local file:
 
@@ -170,7 +170,7 @@ Press Enter to exit.
 
 Although this portion of code can be executed in any AppVM with networking, I advise it be done in the AppVM you are dedicating to Trezor Suite to avoid unwanted code elsewhere.
 
-Step 3: Dom0 Trezor Policy
+## Step 3: Dom0 Trezor Policy
 
 1. Open terminal in dom0 and run the following code:
 
@@ -188,7 +188,7 @@ Press Y to confirm.
 
 Press Enter to exit.
 
-Step 4: Fedora Templates
+## Step 4: Fedora Templates
 
 Because sys-usb is a disposable VM, these installations need to be applied to sys-usb’s template as well as the Disposable VM Template’s template in order to maintain persistence. This is also due to how the qrexec function works in Qubes, which is beyond the scope of this guide.
 
@@ -206,7 +206,7 @@ I am currently running Fedora 37, so my Fedora Qube template VM is named fedora-
 
 4. Set sys-usb’s template as fedora-37-sys-dvm.
 
-Step 5: Trezord Service
+## Step 5: Trezord Service
 
 In fedora-37-sys-dvm:
 
@@ -232,7 +232,7 @@ Press Y to confirm then press Enter to exit.
 
 sudo chmod +x /usr/local/etc/qubes-rpc/trezord-service
 
-Step 6: Trezor Bridge
+## Step 6: Trezor Bridge
 
 In fedora-37-sys:
 
@@ -254,7 +254,7 @@ This will automatically install the bridge in the following directories:
 
 Successful installation should result in terminal showing that both directories are communicating with each other: “created symlink /etc/systemd/system/multi-user.target.wants/trezord.service → /usr/lib/systemd/system/trezord.service.”
 
-Step 7: Udev rules
+## Step 7: Udev rules
 
 Installing the Udev rules will create a plain text file titled 51-trezor.rules in /etc/udev/rules.d which will allow dom0 to facilitate communication between sys-usb and your Trezor Qube in the form of an RPC call.
 
