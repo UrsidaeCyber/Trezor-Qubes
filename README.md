@@ -3,7 +3,7 @@ This repostiory will guide the process of installing Trezor Suite and using Trez
 Unfortunately installing Trezor Suite is not as straight forward as installing other software on Qubes is. So let’s dive in.
 This guide contains two parts: brief instructions and in-depth instructions. Use whichever is suited to your needs.
 
-Brief Instructions:
+# Brief Instructions:
 
 Step 1: Install Trezor Suite
 
@@ -87,13 +87,13 @@ In fedora-37-sys:
 
 Copy and paste this code into the file:
 
-#Trezor
+# Trezor
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="534c", ATTR{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
 KERNEL=="hidraw*", ATTRS{idVendor}=="534c", ATTRS{idProduct}=="0001", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"
 
-#Trezor v2
+# Trezor v2
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="1209", ATTR{idProduct}=="53c0", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="trezor%n"
 
@@ -131,9 +131,8 @@ In fedora-37-sys:
 
 1. sudo dnf install trezor-common
 
-Done.
 
-In-Depth Instructions:
+# In-Depth Instructions:
 
 Step 1: Install Trezor Suite
 
