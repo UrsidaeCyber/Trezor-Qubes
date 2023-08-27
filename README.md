@@ -357,4 +357,4 @@ AND
 
 `sudo dnf install trezor-common`
 
-3. Revoke fedora-37-sys networking permissions in the Qubes manager.`
+3. Revoke fedora-37-sys networking permissions in the Qubes manager.
