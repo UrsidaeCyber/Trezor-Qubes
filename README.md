@@ -63,7 +63,7 @@ In fedora-37-sys-dvm:
 
 3. Add this code to the file:
 
-`socat – TCP:localhost:21325`
+`socat - TCP:localhost:21325`
 
 4. Save and exit.
 
@@ -131,7 +131,7 @@ In the Trezor Whonix AppVM:
 
 1. `sudo apt install pip`
 
-2. `pip3 install –user trezor`
+2. `pip3 install --user trezor`
 
 ### AND
 
@@ -349,7 +349,7 @@ Press Enter to exit.
 
 3. Run the following command to install the trezor package:
 
-`pip3 install –user trezor`
+`pip3 install --user trezor`
 
 AND
 
