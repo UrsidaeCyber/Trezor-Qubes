@@ -1,11 +1,9 @@
 # How to use Trezor on Qubes OS
 Written by Ursidae: https://ursidaecyber.com
 
-This repostiory will guide the process of installing Trezor Suite and using Trezor hardware wallets on Qubes OS.
-Unfortunately installing Trezor Suite is not as straight forward as installing other software on Qubes is. So let’s dive in.
-This guide contains two parts: brief instructions and in-depth instructions. Use whichever is suited to your needs.
+This guide explains how to use Trezor cryptocurrency hardware wallets on Qubes OS. Unfortunately installing Trezor Suite is not as straight forward as installing other software on Qubes is, so we compiled an exhaustive and ultimate guide on the process.
 
-Link to in-depth instructions if you require detail: https://github.com/UrsidaeCyber/Trezor-Qubes#in-depth-instructions
+This guide explains how to use Trezor cryptocurrency hardware wallets on Qubes OS. Unfortunately installing Trezor Suite is not as straight forward as installing other software on Qubes is, so we compiled an exhaustive and ultimate guide on the process. Link to in-depth instructions if you require detail: https://github.com/UrsidaeCyber/Trezor-Qubes#in-depth-instructions
 
 # Brief Instructions:
 
