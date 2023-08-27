@@ -233,7 +233,7 @@ This will create a folder titled qubes-rpc within the specified directory
 
 3. You are now editing the plain text file within the terminal window. Add the following line of code to the file:
 
-`socat – TCP:localhost:21325 `
+`socat - TCP:localhost:21325 `
 
 Press Ctrl + X to save.
 
